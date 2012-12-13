@@ -1,0 +1,38 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>@ViewBag.Title</title>
+    <link href="@Url.Content("~/Content/Site.css")" rel="stylesheet" type="text/css" />
+    <script src="@Url.Content("~/Scripts/jquery-1.4.4.min.js")" type="text/javascript"></script>
+    <link href="@Url.Content("~/Scripts/redmond/jquery-ui-1.8.9.custom.css")" rel="stylesheet" type="text/css" />
+    <script src="@Url.Content("~/Scripts/jquery-ui-1.8.9.custom.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/plugins/jquery.tmpl.js")" type="text/javascript"></script>
+</head>
+
+<body>
+    <div class="page">
+
+        <div class="header">
+            <div class="title">
+                <h1>@ViewBag.Title</h1>
+            </div>
+
+            <div id="loginDisplay">
+                @Html.Partial("_LogOnPartial")
+            </div>
+
+        </div>
+        <br />
+        <br />
+        <div class="main">
+            @RenderBody()
+        <div class="clear">
+        </div>
+            <div class="footer">
+            </div>
+        </div>
+    </div>
+
+
+</body>
+</html>

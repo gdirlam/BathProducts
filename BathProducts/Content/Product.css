@@ -1,0 +1,45 @@
+﻿    .ProductItemsList{ }
+
+    .ProductItems{ width: 800px;}
+    .ProductItems li{ float: left; list-style: none;} 
+    .ProductItems li, .ProductItems img{ width: 200px; height: 200px; } 
+    .ProductItems{ list-style: none;} 
+    .ProductItems li img{ border: none; }
+    .ProductItems li { height: 260px; position: relative;   text-align: center;}
+    .ProductCompare{ position: absolute; bottom: 40px; right: 20px; }
+    .ProductItems li a{ text-decoration: none; }
+    .ProductItems a , .ProductItems a h4{ font-weight:normal !important; color: #999999 !important; padding: 0; margin: 1.5em 0 0 0 ; }
+
+    .ProductItem { 
+            position: relative; border: solid 1px rgb(121, 183, 231); 
+            width: 500px; height: 425px;  background-color: rgb(252, 253, 253); 
+            border-top-left-radius: 5px; border-top-right-radius: 5px;
+    }
+    .ProductItem .ui-tabs-selected{ background-color: rgb(252, 253, 253) !important; background-image: none;}
+    .ProductItem .PriceDescription { list-style: none;  position: absolute; right: 0; width: 135px;  margin: 0; padding: 0;  }
+    .ProductItem img{ clear: both;  margin-bottom: 40px; }
+    .ProductItem h2{ margin: 2px 4px 2px 4px; text-align: center; }
+    .ProductItem .close{ position: absolute; top: 5px; right: 5px; padding: 1px;}
+    .ProductItem .close:hover{ padding: 0;}
+    .ProductItem .close span{
+            background-image: url(../Scripts/redmond/images/ui-icons_cd0a0a_256x240.png);
+            background-position: -96px -128px;
+     }
+
+    .tabs { position: absolute; bottom: -28px; width: 500px; right: 5px;}
+    .tabs li{ list-style: none; float: right; }
+    .ui-tabs-selected{ border-top-style: none !important; height: 15px;  }
+    .ui-state-active{ border-top-style: none !important; } 
+    .tabs li{ border-top-color: rgb(121, 183, 231) !important; } 
+    .tabs li.ui-state-hover{ border-top-color: rgb(197, 219, 236) !important; } 
+    
+    .PriceFeatureSet, .tabs li a{ display: block; margin: 0 10px 0 10px; padding:  0 5px 0 5px;  }
+    .FeatureSet{ display: none;  }
+    .FeatureSet{ 
+            border: solid 1px #dcdcdc; padding: 2em .5em 2em .5em; 
+            position: absolute; top: -200px; right: 0; 
+            text-align: left;  float: none; width:350px;  
+    }
+    .FeatureSet{ background: transparent url('../Images/white70.png') }
+    .FeatureSet li{ text-align: left;  float: none; margin: .5em 0 .5em 0; }
+    

@@ -1,0 +1,45 @@
+﻿@model IEnumerable<BathProducts.Models.Products.Line>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table>
+    <tr>
+        <th>
+            Line_Pk
+        </th>
+        <th>
+            Title
+        </th>
+        <th>
+            Description
+        </th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+@*        <td>
+            @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+        </td>*@
+        <td>
+            @item.Line_Pk
+        </td>
+        <td>
+            @item.Title
+        </td>
+        <td>
+            @item.Description
+        </td>
+    </tr>
+}
+
+</table>
+

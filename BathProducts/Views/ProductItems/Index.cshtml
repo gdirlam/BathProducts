@@ -1,0 +1,64 @@
+﻿@model IEnumerable<BathProducts.Models.ViewModels.BOItem>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table>
+    <tr>
+        <th></th>
+        <th>
+            Item_Pk
+        </th>
+        <th>
+            Name
+        </th>
+        <th>
+            Description
+        </th>
+        <th>
+            Line_Fk
+        </th>
+        <th>
+            Type_Fk
+        </th>
+        <th>
+            Price
+        </th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+        </td>
+        <td>
+            @item.Item_Pk
+        </td>
+        <td>
+            @item.Name
+        </td>
+        <td>
+            @item.Description
+        </td>
+        <td>
+            @item.Line_Fk
+        </td>
+        <td>
+            @item.Type_Fk
+        </td>
+        <td>
+            @String.Format("{0:F}", item.Price)
+        </td>
+    </tr>
+}
+
+</table>
+

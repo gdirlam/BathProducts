@@ -1,0 +1,246 @@
+﻿<link href="@Url.Content("~/Content/ChooseBar.css")" rel="stylesheet" type="text/css" />
+<link href="@Url.Content("~/Content/Product.css")" rel="stylesheet" type="text/css" />
+@*<link href="@Url.Content("~/Scripts/plugins/Quicksand.css")" rel="stylesheet" type="text/css" />
+*@<script src="@Url.Content("~/Scripts/plugins/jquery.quicksand.min.js")" type="text/javascript"></script>
+
+<script language="ecmascript" type="text/ecmascript" id="PageLoadEvents">
+    $(function () {
+        GetLines();
+        GetCatagories();
+    });
+
+    function GetLines() {
+        $.getJSON('/ProductLines/GetLines/', OnGetLinesComplete);
+    }
+
+    function OnGetLinesComplete(result) {
+        $("#ProductLinesTmpl").tmpl(result).appendTo("#ProductLines ul");
+        ChooserBarDisplay();
+    }
+
+    function GetCatagories() {
+        $.getJSON('/ProductCatagories/GetCatagories/', OnGetCatagoriesComplete);
+    }
+
+    function OnGetCatagoriesComplete(result) {
+        $("#ProductTypesTmpl").tmpl(result).appendTo("#ProductTypes ul");
+        ChooserBarDisplay();
+    }
+</script>
+<script language="ecmascript" type="text/ecmascript" id="PageLoadContent">
+    function ChooserBarDisplay() {
+        $('#sorter a.SwitchPicker').button();
+        $('#sorter .sort a').button();
+        $('#sorter .sort a').removeClass('ui-corner-all');
+        $('#sorter ul').buttonset();
+    } 
+
+    function OnGetItemsComplete(result) {
+        $('#ProductItemsList li').remove();
+        $('#ProductItemsListTmpl').tmpl(result).appendTo('#ProductItemsList');
+        $('.ProductItems').quicksand($('#ProductItemsList').find('li'), { adjustHeight: 'dynamic', dataType: "xml" });
+    }
+
+    function DisplayItems(Me, Type, ID) {
+        $('.ProductItem').remove();
+        $('.ProductItems').show();
+        $('.ProductItems').show();
+        $('#sorter .sort a').removeClass('state-active');
+        var ControllerLocation; 
+        if (Type == 'Catagory') {
+            ControllerLocation = '/ProductItems/GetProductItemsByCatagory/' + ID;
+            $.getJSON(ControllerLocation, OnGetItemsComplete);
+        } else {
+            ControllerLocation = '/ProductItems/GetProductItemsByLine/' + ID;
+            $.getJSON(ControllerLocation, OnGetItemsComplete);
+        }
+        $(Me).addClass('state-active');
+    }
+
+</script>
+<script language="ecmascript" type="text/ecmascript" id="EventsAndBehaviors">
+    /* --Page Functions-- */
+    function SwitchPicker() {
+        if ($('#ProductTypes').css('display') == 'none') {
+            $('#ProductTypes').show(); $('#ProductLines').hide()
+        } else {
+            $('#ProductTypes').hide(); $('#ProductLines').show()
+        }
+    }
+    function ChooserBarDisplay() {
+        $('#sorter a.SwitchPicker').button();
+        $('#sorter .sort a').button();
+        $('#sorter .sort a').removeClass('ui-corner-all');
+        $('#sorter ul').buttonset();
+    }
+
+    function doItem(ID) {
+        //$('.ProductItems li').remove();
+        $('.ProductItems').hide();
+        $.getJSON('/ProductItems/GetProductItem/' + ID, OnGetItemByIdComplete);
+    }
+
+    function OnGetItemByIdComplete(result) {
+        var p = result;
+        $("#ProductItemTmpl").tmpl(p).appendTo('#Canvas');
+        $("#FeatureSetTmpl").tmpl(p.FeatureSets).appendTo('.ProductItem .tabs');
+        for (var i = 0; i < p.FeatureSets.length; i++) {
+            var fea = p.FeatureSets[i];
+            $("#FeaturesTmpl").tmpl(fea.Features).appendTo('#FeatureSet' + fea.FeatureSet_Pk);
+        }
+
+        $('.ProductItem .close').mouseenter(function () { $(this).addClass('ui-state-hover'); });
+        $('.ProductItem .close').mouseleave(function () { $(this).removeClass('ui-state-hover'); });
+        $('.ProductItem .close').click(function () {
+            $('.ProductItem').remove();
+            $('.ProductItems').show();
+        });
+        $('.PriceFeatureSet').closest('li').addClass('ui-tabs-selected');
+        $('.PriceFeatureSet').closest('li').addClass('ui-state-active');
+
+        $('.TitleFeatureSet').click(function () {
+            $('.FeatureSet').hide();
+            $('.tabs li').removeClass('ui-state-active');
+            $('.tabs li').removeClass('ui-tabs-selected');
+
+            var UlId = this.id.replace('Title', '#');
+            if ($(UlId).css('display') == 'none') {
+                $(this).closest('li').addClass('ui-tabs-selected');
+                $(this).closest('li').addClass('ui-state-active');
+                $(UlId).show();
+                $('.ProductItem img').fadeTo('normal', 0.2)
+            }
+            else {
+                $(UlId).hide();
+            }
+        });
+
+        $('.tabs > li').mouseenter(function () { $(this).addClass('ui-state-hover'); });
+        $('.tabs > li').mouseleave(function () { $(this).removeClass('ui-state-hover'); });
+
+        $('.PriceFeatureSet').click(function () {
+            $('.tabs li').removeClass('ui-state-active');
+            $('.tabs li').removeClass('ui-tabs-selected');
+            $(this).closest('li').addClass('ui-tabs-selected');
+            $(this).closest('li').addClass('ui-state-active');
+            $('.FeatureSet').hide();
+            $('.ProductItem img').fadeTo('normal', 1)
+        });
+    }
+
+    $(function () {
+        $('.button').button();
+        $('.product-items-cmd-compare').click(function () {
+            var ids = '';
+            if ($('.product-items-compare:checked').length > 0) {
+                $('.product-items-compare:checked').each(function () {
+                    ids += $(this).attr('data') + ','
+                })
+                ids = ids.substr(0, ids.length - 1);
+                GetProductBOItemsToCompare(ids);
+            }
+            return false; 
+        });
+    })
+
+    function GetProductBOItemsToCompare(Ids) {
+        //alert('Events:' + Ids);
+        ControllerLocation = '/ProductItems/GetProductBOItemsList/?keys=' + Ids;
+        $.getJSON( ControllerLocation, GetProductBOItemsToCompareComplete );
+    }
+
+    function GetProductBOItemsToCompareComplete(result) {
+        //$("#ProductTypesTmpl").tmpl(result).appendTo("#ProductTypes ul");
+        //ChooserBarDisplay();
+        //alert(result);
+        //$('#ProductItemCompareTmpl').tmpl(result).appendTo('#ProductItemCompare');
+        $(result).each(function () { 
+            alert($(this).name)
+        })
+       /*
+                       <table>
+                    <tr><td> ${Name} - ${Description}</td></tr>
+                    <tr><td> ${Features}</td></tr>
+                </table>
+       */
+        $('#ProductItemCompare').dialog({modal: true});
+    }
+</script>
+
+    <div id="sorter">
+<div  id="ProductLines">
+         <a class="SwitchPicker" href="#" onclick="javascript: SwitchPicker()"><em class="tick"></em> Shop Product Type </a>
+        <ul>
+            <script id="ProductLinesTmpl" type="text/html">
+                <li class="sort">
+                    <a href="#" onclick="javascript:DisplayItems( this, 'Line', '${Line_Pk}')">${Title}
+                    <div>${Description}</div>
+                    </a>
+                </li>
+            </script>
+        </ul>
+</div>
+<div id="ProductTypes" style="display: none;">        
+        <a class="SwitchPicker" href="#" onclick="javascript: SwitchPicker()"><em class="tick"></em> Shop by Scents </a>
+        <ul>
+            <script id="ProductTypesTmpl" type="text/html">
+                <li class="sort">
+                    <a href="#" onclick="javascript:DisplayItems( this,'Catagory','${Catagory_Pk}')">${Title}
+                    <div>${Description}</div>
+                    </a>
+                </li>
+            </script>
+        </ul>
+</div>
+</div>
+
+    <ul id="ProductItemsList" style="display: none;">
+              <script id="ProductItemsListTmpl" type="text/html">
+                <li id="ProductItem${Item_Pk}" data-id="ProductItem${Item_Pk}">
+                    <a href="javascript:doItem('${Item_Pk}')" title="${Description}">
+                        <img src="/Content/Images/${Type_Fk}/${Item_Pk}.jpg"  />
+                    <h4>${Name}</h4>
+                    </a>
+                    <div class="ProductCompare">
+                        <label for="ProductCompare${Item_Pk}">Compare</label>
+                        <input id="ProductCompare${Item_Pk}" type="checkbox" class="product-items-compare" data="${Item_Pk}" value="" />
+                    </div>
+
+                </li>
+            </script>  
+    </ul>
+    <div style="margin-top: 4em;" id="Canvas">
+        <script id="ProductItemTmpl" type="text/html">
+            <div class="ProductItem"  id="ProductItem${Item_Pk}">
+                <a href="#" class="close ui-corner-all" role="button"><span class="ui-icon ui-icon-closethick">close</span></a>
+                <h2 class="ui-dialog-titlebar ui-widget-header ui-corner-all"> ${Name} </h2> 
+                <ul class="PriceDescription"><li>${Description}</li><li><b>Price:</b> ${DisplayPrice}</li></ul>
+                <img src="/Content/Images/${Type_Fk}/${Item_Pk}.jpg"  />
+                <ul class="tabs"><li class="ui-state-default ui-corner-bottom"><a href="#" class="PriceFeatureSet">Product</a></li></ul>
+            </div>
+            </script> 
+            <script id="FeatureSetTmpl" type="text/html">
+            <li class="ui-state-default ui-corner-bottom">
+                <a href="#" class="TitleFeatureSet" 
+                id="TitleFeatureSet${FeatureSet_Pk}">${Title}</a>
+                <ul class="FeatureSet" id="FeatureSet${FeatureSet_Pk}">
+                </ul>
+            <li>
+            </script> 
+            <script id="FeaturesTmpl" type="text/html"><li><b>${Name}</b>: ${Description}</li>
+            </script> 
+
+
+            <script id="ProductItemCompareTmpl" type="text/html">Features
+                <table>
+                    <tr><td> ${Name} - ${Description}</td></tr>
+                    <tr><td> ${Features}</td></tr>
+                </table>
+            </script> 
+        <ul class="ProductItems" style="">
+        </ul>
+
+        <a href="#" class="product-items-cmd-compare button">compare</a>
+        <div id="ProductItemCompare"></div>
+    </div>
+

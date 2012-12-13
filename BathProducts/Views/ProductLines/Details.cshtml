@@ -1,0 +1,25 @@
+﻿@model BathProducts.Models.Products.Line
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<fieldset>
+    <legend>Line</legend>
+
+    <div class="display-label">Line_Pk</div>
+    <div class="display-field">@Model.Line_Pk</div>
+
+    <div class="display-label">Title</div>
+    <div class="display-field">@Model.Title</div>
+
+    <div class="display-label">Description</div>
+    <div class="display-field">@Model.Description</div>
+</fieldset>
+@*<p>
+    @Html.ActionLink("Edit", "Edit", new { /* id=Model.PrimaryKey */ }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
+*@
